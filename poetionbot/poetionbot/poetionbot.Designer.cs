@@ -31,31 +31,64 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(poetionbot));
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mnuAttach = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1.SuspendLayout();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
+            this.mnuQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.attachToPathOfExileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
             // 
-            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.ContextMenuStrip = this.menuStrip;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
-            this.notifyIcon1.Text = "systrayIcon";
+            this.notifyIcon1.Text = "poetionbot";
             this.notifyIcon1.Visible = true;
-           // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuAttach});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 48);
             // 
             // mnuAttach
             // 
             this.mnuAttach.Name = "mnuAttach";
-            this.mnuAttach.Size = new System.Drawing.Size(152, 22);
-            this.mnuAttach.Text = "Attach Process";
-            this.mnuAttach.Click += new System.EventHandler(this.mnuAttach_Click);
+            this.mnuAttach.Size = new System.Drawing.Size(32, 19);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // tmrRefresh
+            // 
+            this.tmrRefresh.Interval = 1000;
+            this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
+            // 
+            // mnuQuit
+            // 
+            this.mnuQuit.Name = "mnuQuit";
+            this.mnuQuit.Size = new System.Drawing.Size(32, 19);
+            // 
+            // menuStrip
+            // 
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.attachToPathOfExileToolStripMenuItem,
+            this.quitToolStripMenuItem});
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(191, 48);
+            // 
+            // attachToPathOfExileToolStripMenuItem
+            // 
+            this.attachToPathOfExileToolStripMenuItem.Name = "attachToPathOfExileToolStripMenuItem";
+            this.attachToPathOfExileToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.attachToPathOfExileToolStripMenuItem.Text = "Attach to Path of Exile";
+            this.attachToPathOfExileToolStripMenuItem.Click += new System.EventHandler(this.attachToPathOfExileToolStripMenuItem_Click);
+            // 
+            // quitToolStripMenuItem
+            // 
+            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
+            this.quitToolStripMenuItem.Text = "Quit";
+            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // poetionbot
             // 
@@ -66,15 +99,20 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "poetionbot";
             this.Load += new System.EventHandler(this.poetionbot_Load);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.menuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
         private System.Windows.Forms.NotifyIcon notifyIcon1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem mnuAttach;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer tmrRefresh;
+        private System.Windows.Forms.ToolStripMenuItem mnuQuit;
+        private System.Windows.Forms.ContextMenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem attachToPathOfExileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
     }
 }
 
