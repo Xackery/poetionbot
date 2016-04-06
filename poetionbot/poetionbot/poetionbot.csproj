@@ -52,8 +52,10 @@
     <Compile Include="poetionbot.Designer.cs">
       <DependentUpon>poetionbot.cs</DependentUpon>
     </Compile>
+    <Compile Include="poetionbot\bot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="w32\w32.cs" />
     <EmbeddedResource Include="poetionbot.resx">
       <DependentUpon>poetionbot.cs</DependentUpon>
     </EmbeddedResource>
@@ -79,6 +81,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
