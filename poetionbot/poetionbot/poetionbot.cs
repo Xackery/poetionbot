@@ -10,11 +10,17 @@ using System.Windows.Forms;
 
 namespace poetionbot
 {
-    public partial class Form1 : Form
+    public partial class poetionbot : Form
     {
-        public Form1()
+        public poetionbot()
         {
             InitializeComponent();
+        }
+        
+
+        private void mnuAttach_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
