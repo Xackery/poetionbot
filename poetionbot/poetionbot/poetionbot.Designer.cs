@@ -38,6 +38,7 @@
             this.menuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.attachToPathOfExileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,10 +72,11 @@
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuSettings,
             this.attachToPathOfExileToolStripMenuItem,
             this.quitToolStripMenuItem});
             this.menuStrip.Name = "menuStrip";
-            this.menuStrip.Size = new System.Drawing.Size(191, 48);
+            this.menuStrip.Size = new System.Drawing.Size(191, 70);
             // 
             // attachToPathOfExileToolStripMenuItem
             // 
@@ -90,14 +92,25 @@
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
+            // mnuSettings
+            // 
+            this.mnuSettings.Name = "mnuSettings";
+            this.mnuSettings.Size = new System.Drawing.Size(190, 22);
+            this.mnuSettings.Text = "Settings";
+            this.mnuSettings.Click += new System.EventHandler(this.mnuSettings_Click);
+            // 
             // poetionbot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "poetionbot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "poetionbot";
+            this.Activated += new System.EventHandler(this.poetionbot_Activated);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.poetionbot_FormClosing);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.poetionbot_FormClosed);
             this.Load += new System.EventHandler(this.poetionbot_Load);
             this.menuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -113,6 +126,7 @@
         private System.Windows.Forms.ContextMenuStrip menuStrip;
         private System.Windows.Forms.ToolStripMenuItem attachToPathOfExileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuSettings;
     }
 }
 
