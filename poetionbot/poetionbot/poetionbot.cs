@@ -17,6 +17,7 @@ namespace poetionbot
         private IntPtr handle;
         private IntPtr processHandle;
         private bot instance;
+        private poetionbot mainForm;
 
         public poetionbot()
         {
@@ -27,7 +28,7 @@ namespace poetionbot
         {
             instance = new bot();
             instance.manaAddress = 0x7DD7C060;
-
+            
            checkHandleStatus();
         }
         
@@ -40,9 +41,21 @@ namespace poetionbot
                 notifyIcon1.Text = "poetionbot is attached";
             } else
             {
+                
                 mnuAttach.Text = "Detach From Path of Exile (" +handle.ToString()+")";
                 notifyIcon1.Text = "poetionbot is not attached";
-                instance.handle = handle;               
+                instance.handle = handle;
+                var ps = new pointerset();
+                ps.baseAddress = 0x79A4A780;
+                //ps.baseAddress = 0x009D03C4;
+                ps.offsets = new int[5];
+                ps.offsets[0] = 0xA4;
+                ps.offsets[1] = 0x408;
+                ps.offsets[2] = 0x378;
+                ps.offsets[3] = 0x188;
+                ps.offsets[4] = 0x7DC;
+                var mana = w32.ReadProcessMemoryOffset(handle, ps);
+                MessageBox.Show("MAna:" + mana);
             }
         }
 
@@ -97,6 +110,33 @@ namespace poetionbot
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void poetionbot_Activated(object sender, EventArgs e)
+        {
+            
+            if (mainForm == null)
+            {
+                mainForm = this;
+                mainForm.Hide();
+            }
+        }
+
+        private void mnuSettings_Click(object sender, EventArgs e)
+        {
+            mainForm.Show();
+            mainForm.Activate();                        
+        }
+
+        private void poetionbot_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            
+        }
+
+        private void poetionbot_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            mainForm.Hide();
+            e.Cancel = true;
         }
     }
 }

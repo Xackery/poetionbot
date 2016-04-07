@@ -55,6 +55,7 @@
     <Compile Include="poetionbot\bot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="w32\pointerset.cs" />
     <Compile Include="w32\w32.cs" />
     <EmbeddedResource Include="poetionbot.resx">
       <DependentUpon>poetionbot.cs</DependentUpon>
