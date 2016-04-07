@@ -48,6 +48,25 @@ namespace poetionbot
             return BitConverter.ToInt32(buffer, 0);            
         }
 
+
+        public static int ReadProcessMemoryOffset(IntPtr handle, pointerset ps)
+        {
+            //Start with the base address's value
+            var addr = ps.baseAddress; // ReadProcessMemory(handle, ps.baseAddress);
+            Console.WriteLine("0:", addr.ToString("X"));
+            for (var i = 0; i < ps.offsets.Length; i++) {
+                //Get each offset
+                var offset = ReadProcessMemory(handle, addr + ps.offsets[i]);
+               
+                //Console.WriteLine((i+1)+"Offset:"+offset.ToString("X"));
+                //Set the offset
+                addr = offset;
+                //Console.WriteLine((i + 1) + "Addr:" + addr.ToString("X"));
+            }
+          //  Console.WriteLine("Last addr:"+addr.ToString("X"));
+            return addr;
+        }
+
         //Send Input
         public const int INPUT_MOUSE = 0;
         public const int INPUT_KEYBOARD = 1;
