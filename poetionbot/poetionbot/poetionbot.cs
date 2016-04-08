@@ -13,9 +13,11 @@ namespace poetionbot
 {
     public partial class poetionbot : Form
     {
-        
-        private IntPtr handle;
-        private IntPtr processHandle;
+
+        private Process sourceProcess;
+        private IntPtr attachHandle;
+        private IntPtr processHandleWindow;
+
         private bot instance;
         private poetionbot mainForm;
 
@@ -36,25 +38,32 @@ namespace poetionbot
         private void checkHandleStatus()
         {
 
-            if (handle.ToString() == "0") {
+            if (attachHandle.ToString() == "0") {
                 mnuAttach.Text = "Attach To Path of Exile";
                 notifyIcon1.Text = "poetionbot is attached";
             } else
             {
                 
-                mnuAttach.Text = "Detach From Path of Exile (" +handle.ToString()+")";
+                mnuAttach.Text = "Detach From Path of Exile (" + attachHandle.ToString()+")";
                 notifyIcon1.Text = "poetionbot is not attached";
-                instance.handle = handle;
+                instance.handle = attachHandle;
                 var ps = new pointerset();
-                ps.baseAddress = 0x79A4A780;
-                //ps.baseAddress = 0x009D03C4;
+
+                ps.baseAddress = sourceProcess.MainModule.BaseAddress.ToInt32();// .MainModule.EntryPointAddress.ToInt32();
+                                                                                // ps.baseAddress = 0x00905A4D;
+                                                                                //ps.baseAddress += 0x009D03C4;
+                //ps.baseAddress += 0x009D03C4;
+                //ps.baseAddress = 0x79D54610 - ps.baseAddress;
+                MessageBox.Show(ps.baseAddress.ToString("X") + "");
+
+                //ps.baseAddress = 0x79A4A780;
                 ps.offsets = new int[5];
                 ps.offsets[0] = 0xA4;
                 ps.offsets[1] = 0x408;
                 ps.offsets[2] = 0x378;
                 ps.offsets[3] = 0x188;
                 ps.offsets[4] = 0x7DC;
-                var mana = w32.ReadProcessMemoryOffset(handle, ps);
+                var mana = w32.ReadProcessMemoryOffset(attachHandle, ps);
                 MessageBox.Show("MAna:" + mana);
             }
         }
@@ -72,7 +81,7 @@ namespace poetionbot
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
-            if (processHandle != w32.GetForegroundWindow())
+            if (processHandleWindow != w32.GetForegroundWindow())
             {
                 return;
             }
@@ -81,9 +90,9 @@ namespace poetionbot
 
         private void attachToPathOfExileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (handle.ToString() != "0")
+            if (attachHandle.ToString() != "0")
             {
-                handle = new IntPtr();
+                attachHandle = new IntPtr();
                 checkHandleStatus();
                 return;
             }
@@ -93,16 +102,15 @@ namespace poetionbot
             var processes = w32.GetProcessList("pathofexilesteam");
             if (processes.Length == 1)
             {
-                handle = w32.AttachProcess(processes[0]);
-
-                processHandle = processes[0].MainWindowHandle;
+                attachHandle = w32.AttachProcess(processes[0]);
+                sourceProcess = processes[0];
+                processHandleWindow = processes[0].MainWindowHandle;
                 tmrRefresh.Start();
                 checkHandleStatus();
             }
             else
-            {
-                
-                MessageBox.Show(processes.Length + "Instance of Path of Exile found.");
+            {                
+                MessageBox.Show(processes.Length + "Instance of Path of Exile found, which is not currently supported.");
                 return;
             }
         }

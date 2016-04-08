@@ -8,6 +8,10 @@ namespace poetionbot
 {
     class pointerset
     {
+        public string moduleName;
+        public int baseOffset;
+
+        //Base address is derived from moduleName+baseOffset
         public int baseAddress;
         public int[] offsets;
     }

@@ -40,7 +40,7 @@ namespace poetionbot
           int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
 
         public static int ReadProcessMemory(IntPtr handle, int address)
-        {
+        {            
             int bytesRead = 0;
             byte[] buffer = new byte[4];
 
@@ -53,8 +53,9 @@ namespace poetionbot
         {
             //Start with the base address's value
             var addr = ps.baseAddress; // ReadProcessMemory(handle, ps.baseAddress);
-            Console.WriteLine("0:", addr.ToString("X"));
+            //Console.WriteLine("b:", addr.ToString("X"));
             for (var i = 0; i < ps.offsets.Length; i++) {
+                
                 //Get each offset
                 var offset = ReadProcessMemory(handle, addr + ps.offsets[i]);
                
