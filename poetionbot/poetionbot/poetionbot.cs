@@ -23,6 +23,8 @@ namespace poetionbot
 
         private string currentFlask;
 
+        private bool isSystrayExit;
+
         public poetionbot()
         {
             InitializeComponent();
@@ -223,7 +225,8 @@ namespace poetionbot
 
         private void quitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            isSystrayExit = true;
+           Application.Exit();
         }
 
         private void poetionbot_Activated(object sender, EventArgs e)
@@ -249,8 +252,13 @@ namespace poetionbot
 
         private void poetionbot_FormClosing(object sender, FormClosingEventArgs e)
         {
+
             mainForm.Hide();
-            e.Cancel = true;
+            if (!isSystrayExit)
+            { //Only exit if the systray invokes it.
+                e.Cancel = true;
+            }
+            
         }
 
         private void changeIcon(string iconType)
@@ -371,6 +379,11 @@ namespace poetionbot
         {
             instance.rules[3].percent = (float)((float)tck4.Value / (float)100);
             ruleSync();
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }
