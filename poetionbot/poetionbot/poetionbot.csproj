@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="iconTypes.cs" />
     <Compile Include="poetionbot.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -53,6 +54,7 @@
       <DependentUpon>poetionbot.cs</DependentUpon>
     </Compile>
     <Compile Include="poetionbot\bot.cs" />
+    <Compile Include="poetionbot\potionRule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="w32\pointerset.cs" />
@@ -68,6 +70,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -82,7 +85,24 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\redFlask.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blueFlask.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\blackFlask.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\purpleFlask.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\greenFlask.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\swirlFlask.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

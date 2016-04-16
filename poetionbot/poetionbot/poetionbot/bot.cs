@@ -17,57 +17,44 @@ namespace poetionbot
         public int curMana = 0;
         public int[] clickDelay;
 
-        public string CheckStats()
-        {
-            if (clickDelay == null)
-            {
-                clickDelay = new int[5];
-            }
-
-            var retString = "";
-            retString += CheckHealth();
-            retString += CheckMana();
-            return retString;
-        }
-
+        public potionRule[] rules;
         //53576CCC hp max 204
         //53576CD0 hp current 208
         //53576CF0 mana max  240
         //53576CF4 mana current 244
 
+        public bot()
+        {
+            
+            clickDelay = new int[5];
+            rules = new potionRule[5];
+            for (var i = 0; i < 5; i++)
+            {
+                rules[i] = new potionRule();
+            }
+        }
+
         public string CheckHealth()
         {
+
+
             var retString = "";
             maxHP = w32.ReadProcessMemory(handle, manaAddress - 40);
             curHP = w32.ReadProcessMemory(handle, manaAddress - 36);
             if (curHP < 1 || maxHP < 1) {
-                return "";
-            }
-            if (((float)curHP / (float)maxHP) < 0.4)
-            {
-                UsePotion(2);
-                retString += "Used heal potion2 due to " + curHP + "/" + maxHP+ "\n";
+                throw new Exception("Memory Failure");                
             }
 
-            if (((float)curHP / (float)maxHP) < 0.4)
-            {
-                UsePotion(4);
-                retString += "Used heal potion 4 due to " + curHP + "/" + maxHP + "\n";
-            }
+            for (var i =0; i < rules.Length; i++) {
+                var rule = rules[i];
+                if (!rule.isHP) continue;
 
-            if (((float)curHP / (float)maxHP) < 0.5)
-            {
-                UsePotion(3);
-                retString += "Used heal potion 3 due to " + curHP + "/" + maxHP +"\n";
+                if (((float)curHP / (float)maxHP) < rule.percent)
+                {
+                    UsePotion(i+1);
+                    retString += "Used heal potion "+(i+1)+" due to " + curHP + "/" + maxHP + "\n";
+                }
             }
-
-
-            if (((float)curHP / (float)maxHP) < 0.8)
-            { 
-                UsePotion(1);
-                retString +=  "Used heal potion 1 due to " + curHP + "/" + maxHP + "\n";
-            }
-            
             return retString;
         }
 
@@ -77,15 +64,22 @@ namespace poetionbot
             curMana = w32.ReadProcessMemory(handle, manaAddress);
             if (curMana < 1 || maxMana < 1)
             {
-                return "";
+                throw new Exception("Memory Failure");
             }
-            
-            if (((float)curMana / (float)maxMana)  < 0.1)
+
+            var retString = "";
+            for (var i = 0; i < rules.Length; i++)
             {
-                UsePotion(5);
-                return "Used mana potion due to " + curMana + "/" + maxMana+ "\n";
+                var rule = rules[i];
+                if (rule.isHP) continue;
+
+                if (((float)curHP / (float)maxHP) < rule.percent)
+                {
+                    UsePotion(i + 1);
+                    retString += "Used heal potion " + (i + 1) + " due to " + curHP + "/" + maxHP + "\n";
+                }
             }
-            return "";
+            return retString;
         }
 
         public void UsePotion(int hotkey)
