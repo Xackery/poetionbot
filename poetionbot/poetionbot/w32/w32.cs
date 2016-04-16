@@ -23,6 +23,8 @@ namespace poetionbot
             }
             return Process.GetProcessesByName(filter);
         }
+        
+        
 
         //Attach to a process
         const int PROCESS_WM_READ = 0x0010;
@@ -31,7 +33,7 @@ namespace poetionbot
 
         public static IntPtr AttachProcess(Process process)
         {
-            return OpenProcess(PROCESS_WM_READ, false, process.Id);
+            return OpenProcess(PROCESS_WM_READ, true, process.Id);
         }
 
         //Read process memory
@@ -53,18 +55,18 @@ namespace poetionbot
         {
             //Start with the base address's value
             var addr = ps.baseAddress; // ReadProcessMemory(handle, ps.baseAddress);
-            //Console.WriteLine("b:", addr.ToString("X"));
+            Console.WriteLine("b:", addr.ToString("X"));
             for (var i = 0; i < ps.offsets.Length; i++) {
                 
                 //Get each offset
                 var offset = ReadProcessMemory(handle, addr + ps.offsets[i]);
                
-                //Console.WriteLine((i+1)+"Offset:"+offset.ToString("X"));
+                Console.WriteLine((i+1)+"Offset:"+offset.ToString("X"));
                 //Set the offset
                 addr = offset;
                 //Console.WriteLine((i + 1) + "Addr:" + addr.ToString("X"));
             }
-          //  Console.WriteLine("Last addr:"+addr.ToString("X"));
+            Console.WriteLine("Last addr:"+addr.ToString("X"));
             return addr;
         }
 

@@ -34,6 +34,15 @@ namespace poetionbot
             }
         }
 
+        public string GetStats()
+        {
+            maxHP = w32.ReadProcessMemory(handle, manaAddress - 40);
+            curHP = w32.ReadProcessMemory(handle, manaAddress - 36);
+            maxMana = w32.ReadProcessMemory(handle, manaAddress - 4);
+            curMana = w32.ReadProcessMemory(handle, manaAddress);
+            return curHP + "/" + maxHP + " " + curMana + "/" + maxMana;
+        }
+
         public string CheckHealth()
         {
 
@@ -72,11 +81,10 @@ namespace poetionbot
             {
                 var rule = rules[i];
                 if (rule.isHP) continue;
-
-                if (((float)curHP / (float)maxHP) < rule.percent)
+                if (((float)curMana / (float)maxMana) < rule.percent)
                 {
                     UsePotion(i + 1);
-                    retString += "Used heal potion " + (i + 1) + " due to " + curHP + "/" + maxHP + "\n";
+                    retString += "Used mana potion " + (i + 1) + " due to " + curMana + "/" + maxMana + "\n";
                 }
             }
             return retString;
@@ -88,7 +96,7 @@ namespace poetionbot
             {
                 return;
             }
-
+            
             if (clickDelay[hotkey-1] > (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds)) {
                 return;
             }

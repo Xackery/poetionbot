@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace poetionbot
 {
@@ -36,10 +37,10 @@ namespace poetionbot
             instance = new bot();
             unchecked
             {
-                instance.manaAddress = (int)0xB0165C3C;
+                instance.manaAddress = (int)0x6AD22A74;
             }
-           checkHandleStatus();
-           attachPoE();
+            checkHandleStatus();
+            attachPoE();
             loadConfig();
         }
 
@@ -60,17 +61,19 @@ namespace poetionbot
             instance.rules[4].isHP = false;
             instance.rules[4].percent = 0.1f;
 
-            chkHP1.Checked = instance.rules[0].isHP;
-            chkHP2.Checked = instance.rules[1].isHP;
-            chkHP3.Checked = instance.rules[2].isHP;
-            chkHP4.Checked = instance.rules[3].isHP;
-            chkHP5.Checked = instance.rules[4].isHP;
 
             tck1.Value = (int)((float)instance.rules[0].percent * (float)100);
             tck2.Value = (int)((float)instance.rules[1].percent * (float)100);
             tck3.Value = (int)((float)instance.rules[2].percent * (float)100);
             tck4.Value = (int)((float)instance.rules[3].percent * (float)100);
             tck5.Value = (int)((float)instance.rules[4].percent * (float)100);
+
+            
+            chkHP1.Checked = instance.rules[0].isHP;
+            chkHP2.Checked = instance.rules[1].isHP;
+            chkHP3.Checked = instance.rules[2].isHP;
+            chkHP4.Checked = instance.rules[3].isHP;
+            chkHP5.Checked = instance.rules[4].isHP;
 
         }
 
@@ -136,6 +139,7 @@ namespace poetionbot
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
+            notifyIcon1.Text = instance.GetStats();
             if (processHandleWindow != w32.GetForegroundWindow())
             {
                 changeIcon("swirlFlask");
@@ -156,10 +160,11 @@ namespace poetionbot
                 retString = instance.CheckMana();
                 if (retString.Length > 0)
                 {
-                    //MessageBox.Show(retString);
+                   // MessageBox.Show(retString);
                     changeIcon("blueFlask");
                     txtLog.Text = txtLog.Text + "\n" + DateTime.Now + ":" + retString + "\n";
                 }
+               
             } catch (Exception err)
             {
                 if (err.Message == "Memory Exception")
@@ -189,11 +194,38 @@ namespace poetionbot
                     MessageBox.Show("Mana is not set!");
                     return;
                 }
+
+                instance.handle = attachHandle;
                 tmrRefresh.Start();
                 checkHandleStatus();
                 changeIcon("greenFlask");
                 attachToPathOfExileToolStripMenuItem.Text = "Detach from Path of Exile";
                 notifyIcon1.Text = "poetionbot is attached";
+
+                
+                var ps = new pointerset();
+                //sourceProcess.MainModule.BaseAddress
+                //MessageBox.Show(IntPtr.Add(0x01, 0x009DD404).ToString("X"));
+                // MessageBox.Show((w32.GetModuleHandle(sourceProcess.MainModule.FileName)).ToString("X"));
+
+                
+                ps.baseAddress = sourceProcess.MainModule.EntryPointAddress.ToInt32();
+                //THIS IS WHERE IM HAVING HEADACHES.
+                MessageBox.Show(attachHandle.ToString("X")); ////This echos out something like 590, should be 905A4D
+
+
+                //ps.baseAddress += 0x9DD404;
+                // Marshal.GetHINSTANCE(typeof(MyClass).Module)
+
+                ps.baseAddress = 0x6B2F9EF8;
+                ps.offsets = new int[5];
+                ps.offsets[0] = 0x44;
+                ps.offsets[1] = 0x688;
+                ps.offsets[2] = 0x2C8;
+                ps.offsets[3] = 0x70;
+                ps.offsets[4] = 0x54;
+                var tmpMana = w32.ReadProcessMemoryOffset(attachHandle, ps);
+                MessageBox.Show("MAna:" + tmpMana);
             }
             else
             {
@@ -275,24 +307,9 @@ namespace poetionbot
                     return;
                 case "redFlask":
                     notifyIcon1.Icon = Properties.Resources.redFlask;
-                    if (!tmrGreenReset.Enabled) {
-                        tmrGreenReset.Start();
-                    } else
-                    {
-                        tmrGreenReset.Stop();
-                        tmrGreenReset.Start();
-                    }
                     return;
                 case "blueFlask":
-                    notifyIcon1.Icon = Properties.Resources.blueFlask;
-                    if (!tmrGreenReset.Enabled)
-                    {
-                        tmrGreenReset.Start();
-                    } else
-                    {
-                        tmrGreenReset.Stop();
-                        tmrGreenReset.Start();
-                    }
+                    notifyIcon1.Icon = Properties.Resources.blueFlask;                    
                     return;
                 case "greenFlask":
                     notifyIcon1.Icon = Properties.Resources.greenFlask;
