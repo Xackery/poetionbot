@@ -23,8 +23,10 @@ namespace poetionbot
             }
             return Process.GetProcessesByName(filter);
         }
-        
-        
+
+
+        [DllImport("kernel32.dll")]
+        public static extern IntPtr GetModuleHandle(string lpModuleName);
 
         //Attach to a process
         const int PROCESS_WM_READ = 0x0010;
@@ -51,20 +53,26 @@ namespace poetionbot
         }
 
 
-        public static int ReadProcessMemoryOffset(IntPtr handle, pointerset ps)
+        public static int ReadProcessMemoryOffset(IntPtr handle, pointerset ps, int finalAdjust)
         {
             //Start with the base address's value
             var addr = ps.baseAddress; // ReadProcessMemory(handle, ps.baseAddress);
             Console.WriteLine("b:", addr.ToString("X"));
             for (var i = 0; i < ps.offsets.Length; i++) {
-                
+
+                var preOffset = ps.offsets[i];
+
+                if ((ps.offsets.Length - 1) == i) {
+                    preOffset += finalAdjust;
+                }
+
                 //Get each offset
-                var offset = ReadProcessMemory(handle, addr + ps.offsets[i]);
+                var offset = ReadProcessMemory(handle, addr + preOffset);
                
                 Console.WriteLine((i+1)+"Offset:"+offset.ToString("X"));
                 //Set the offset
                 addr = offset;
-                //Console.WriteLine((i + 1) + "Addr:" + addr.ToString("X"));
+                Console.WriteLine((i + 1) + "Addr:" + addr.ToString("X"));
             }
             Console.WriteLine("Last addr:"+addr.ToString("X"));
             return addr;

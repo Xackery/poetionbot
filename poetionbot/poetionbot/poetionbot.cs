@@ -33,12 +33,13 @@ namespace poetionbot
 
         private void poetionbot_Load(object sender, EventArgs e)
         {
+           
+
             changeIcon("blackFlask");
             instance = new bot();
-            unchecked
-            {
-                instance.manaAddress = (int)0x6AD22A74;
-            }
+
+            
+            
             checkHandleStatus();
             attachPoE();
             loadConfig();
@@ -69,11 +70,11 @@ namespace poetionbot
             tck5.Value = (int)((float)instance.rules[4].percent * (float)100);
 
             
-            chkHP1.Checked = instance.rules[0].isHP;
-            chkHP2.Checked = instance.rules[1].isHP;
-            chkHP3.Checked = instance.rules[2].isHP;
-            chkHP4.Checked = instance.rules[3].isHP;
-            chkHP5.Checked = instance.rules[4].isHP;
+            chkHP1.Checked = !instance.rules[0].isHP;
+            chkHP2.Checked = !instance.rules[1].isHP;
+            chkHP3.Checked = !instance.rules[2].isHP;
+            chkHP4.Checked = !instance.rules[3].isHP;
+            chkHP5.Checked = !instance.rules[4].isHP;
 
         }
 
@@ -89,40 +90,7 @@ namespace poetionbot
 
         private void checkHandleStatus()
         {
-            /*
-            if (attachHandle.ToString() == "0") {
-                mnuAttach.Text = "Attach To Path of Exile";
-                notifyIcon1.Text = "poetionbot is attached";
-            } else
-            {
-                
-                mnuAttach.Text = "Detach From Path of Exile (" + attachHandle.ToString()+")";
-                notifyIcon1.Text = "poetionbot is not attached";
-                instance.handle = attachHandle;
-                var ps = new pointerset();
-                
-
-                //MessageBox.Show(sourceProcess. .ToString("X"));
-
-               // ps.baseAddress = sourceProcess.MainModule.BaseAddress.ToInt32();// .MainModule.EntryPointAddress.ToInt32();
-                                                                       // ps.baseAddress = 0x00905A4D;
-                                                                       //ps.baseAddress += 0x009D03C4;
-                                                                       //ps.baseAddress += 0x009D03C4;
-                                                                       //ps.baseAddress = 0x79D54610 - ps.baseAddress;
-               // ps.baseAddress = 0x009D03C4;
-              //  MessageBox.Show(ps.baseAddress.ToString("X") + "");
-
-                //ps.baseAddress = 0x79A4A780;
-             /*   ps.offsets = new int[5];
-                ps.offsets[0] = 0xA4;
-                ps.offsets[1] = 0x408;
-                ps.offsets[2] = 0x378;
-                ps.offsets[3] = 0x188;
-                ps.offsets[4] = 0x7DC;
-                var mana = w32.ReadProcessMemoryOffset(attachHandle, ps);
-                MessageBox.Show("MAna:" + mana);
-                */
-          //  }
+           
         
         }
 
@@ -187,45 +155,23 @@ namespace poetionbot
                 attachHandle = w32.AttachProcess(processes[0]);
                 sourceProcess = processes[0];
                 processHandleWindow = processes[0].MainWindowHandle;
-
-                var mana = w32.ReadProcessMemory(attachHandle, instance.manaAddress);
+                instance.ps.baseAddress = sourceProcess.MainModule.BaseAddress.ToInt32();
+                
+                var mana = w32.ReadProcessMemoryOffset(attachHandle, instance.ps, 0);
                 if (mana == 0)
                 {
-                    MessageBox.Show("Mana is not set!");
+                    MessageBox.Show("Pointers don't seem to be aligned properly...");
                     return;
                 }
+
+                //MessageBox.Show(mana+"");
 
                 instance.handle = attachHandle;
                 tmrRefresh.Start();
                 checkHandleStatus();
                 changeIcon("greenFlask");
                 attachToPathOfExileToolStripMenuItem.Text = "Detach from Path of Exile";
-                notifyIcon1.Text = "poetionbot is attached";
-
-                
-                var ps = new pointerset();
-                //sourceProcess.MainModule.BaseAddress
-                //MessageBox.Show(IntPtr.Add(0x01, 0x009DD404).ToString("X"));
-                // MessageBox.Show((w32.GetModuleHandle(sourceProcess.MainModule.FileName)).ToString("X"));
-
-                
-                ps.baseAddress = sourceProcess.MainModule.EntryPointAddress.ToInt32();
-                //THIS IS WHERE IM HAVING HEADACHES.
-                MessageBox.Show(attachHandle.ToString("X")); ////This echos out something like 590, should be 905A4D
-
-
-                //ps.baseAddress += 0x9DD404;
-                // Marshal.GetHINSTANCE(typeof(MyClass).Module)
-
-                ps.baseAddress = 0x6B2F9EF8;
-                ps.offsets = new int[5];
-                ps.offsets[0] = 0x44;
-                ps.offsets[1] = 0x688;
-                ps.offsets[2] = 0x2C8;
-                ps.offsets[3] = 0x70;
-                ps.offsets[4] = 0x54;
-                var tmpMana = w32.ReadProcessMemoryOffset(attachHandle, ps);
-                MessageBox.Show("MAna:" + tmpMana);
+                notifyIcon1.Text = "poetionbot is attached";                
             }
             else
             {

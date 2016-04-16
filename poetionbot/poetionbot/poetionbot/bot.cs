@@ -8,7 +8,6 @@ namespace poetionbot
 {
     class bot
     {
-        public int manaAddress;
         public IntPtr handle;
 
         public int maxHP = 0;
@@ -16,6 +15,10 @@ namespace poetionbot
         public int maxMana = 0;
         public int curMana = 0;
         public int[] clickDelay;
+        
+        public pointerset ps;
+
+
 
         public potionRule[] rules;
         //53576CCC hp max 204
@@ -25,7 +28,15 @@ namespace poetionbot
 
         public bot()
         {
-            
+            ps = new pointerset();
+            ps.offsets = new int[6];
+            ps.offsets[0] = 0x9DD404;
+            ps.offsets[1] = 0x44;
+            ps.offsets[2] = 0x688;
+            ps.offsets[3] = 0x2C8;
+            ps.offsets[4] = 0x70;
+            ps.offsets[5] = 0x54;
+
             clickDelay = new int[5];
             rules = new potionRule[5];
             for (var i = 0; i < 5; i++)
@@ -33,13 +44,14 @@ namespace poetionbot
                 rules[i] = new potionRule();
             }
         }
+        
 
         public string GetStats()
         {
-            maxHP = w32.ReadProcessMemory(handle, manaAddress - 40);
-            curHP = w32.ReadProcessMemory(handle, manaAddress - 36);
-            maxMana = w32.ReadProcessMemory(handle, manaAddress - 4);
-            curMana = w32.ReadProcessMemory(handle, manaAddress);
+            maxHP = w32.ReadProcessMemoryOffset(handle, ps, -40);
+            curHP = w32.ReadProcessMemoryOffset(handle, ps, -36);
+            maxMana = w32.ReadProcessMemoryOffset(handle, ps, -4);
+            curMana = w32.ReadProcessMemoryOffset(handle, ps, 0);            
             return curHP + "/" + maxHP + " " + curMana + "/" + maxMana;
         }
 
@@ -48,8 +60,8 @@ namespace poetionbot
 
 
             var retString = "";
-            maxHP = w32.ReadProcessMemory(handle, manaAddress - 40);
-            curHP = w32.ReadProcessMemory(handle, manaAddress - 36);
+            maxHP = w32.ReadProcessMemoryOffset(handle, ps, -40);
+            curHP = w32.ReadProcessMemoryOffset(handle, ps, -36);
             if (curHP < 1 || maxHP < 1) {
                 throw new Exception("Memory Failure");                
             }
@@ -69,8 +81,8 @@ namespace poetionbot
 
         public string CheckMana()
         {
-            maxMana = w32.ReadProcessMemory(handle, manaAddress - 4);
-            curMana = w32.ReadProcessMemory(handle, manaAddress);
+            maxMana = w32.ReadProcessMemoryOffset(handle, ps, -4);
+            curMana = w32.ReadProcessMemoryOffset(handle, ps, 0);
             if (curMana < 1 || maxMana < 1)
             {
                 throw new Exception("Memory Failure");
