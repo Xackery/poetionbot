@@ -150,7 +150,11 @@ namespace poetionbot
         private void attachPoE()
         {
             var processes = w32.GetProcessList("pathofexilesteam");
-            if (processes.Length == 1)
+            if (processes.Length == 0 )
+            {
+                changeIcon("blackFlask");
+            }
+            else if (processes.Length == 1)
             {
                 attachHandle = w32.AttachProcess(processes[0]);
                 sourceProcess = processes[0];
