@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace poetionbot
 {
-    class potionRule
+    class config
     {
-        public int Hotkey;
-        public float Percent;
-        public bool IsHPTrigger;
+        public pointerset ManaPointerSet;
+        public potionRule[] Rules;
+        public int UpdateRateInMs;
     }
 }

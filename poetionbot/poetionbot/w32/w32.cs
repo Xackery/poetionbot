@@ -56,13 +56,13 @@ namespace poetionbot
         public static int ReadProcessMemoryOffset(IntPtr handle, pointerset ps, int finalAdjust)
         {
             //Start with the base address's value
-            var addr = ps.baseAddress; // ReadProcessMemory(handle, ps.baseAddress);
+            var addr =  ps.GetBaseAddress(); // ReadProcessMemory(handle, ps.baseAddress);
             Console.WriteLine("b:", addr.ToString("X"));
-            for (var i = 0; i < ps.offsets.Length; i++) {
+            for (var i = 0; i < ps.Offsets.Length; i++) {
 
-                var preOffset = ps.offsets[i];
+                var preOffset = ps.Offsets[i];
 
-                if ((ps.offsets.Length - 1) == i) {
+                if ((ps.Offsets.Length - 1) == i) {
                     preOffset += finalAdjust;
                 }
 

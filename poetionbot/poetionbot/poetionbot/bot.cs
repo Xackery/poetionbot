@@ -12,17 +12,13 @@ namespace poetionbot
     {
         public IntPtr handle;
 
+        public config config = new config();
         public int maxHP = 0;
         public int curHP = 0;
         public int maxMana = 0;
         public int curMana = 0;
         public int[] clickDelay;
         
-        public pointerset ps;
-
-
-
-        public potionRule[] rules;
         //53576CCC hp max 204
         //53576CD0 hp current 208
         //53576CF0 mana max  240
@@ -30,50 +26,60 @@ namespace poetionbot
 
         public bot()
         {
+            
             LoadIni();
         }
         
         public void ResetDefaults()
         {
-            ps = new pointerset();
-            ps.offsets = new int[6];
-            ps.offsets[0] = 0x9DD404;
-            ps.offsets[1] = 0x44;
-            ps.offsets[2] = 0x688;
-            ps.offsets[3] = 0x2C8;
-            ps.offsets[4] = 0x70;
-            ps.offsets[5] = 0x54;
+            
+            config.ManaPointerSet = new pointerset();
+            config.ManaPointerSet.ModuleName = "PathOfExileSteam.exe";
+            config.ManaPointerSet.Offsets = new int[6];
+            config.ManaPointerSet.Offsets[0] = 0x9DD404;
+            config.ManaPointerSet.Offsets[1] = 0x44;
+            config.ManaPointerSet.Offsets[2] = 0x688;
+            config.ManaPointerSet.Offsets[3] = 0x2C8;
+            config.ManaPointerSet.Offsets[4] = 0x70;
+            config.ManaPointerSet.Offsets[5] = 0x54;
 
             clickDelay = new int[5];
 
-            rules = new potionRule[5];
+            config.UpdateRateInMs = 100;
+
+            config.Rules = new potionRule[5];
             for (var i = 0; i < 5; i++)
             {
-                rules[i] = new potionRule();
-                rules[i].hotkey = i + 1;
-                rules[i].isHP = true;
+                config.Rules[i] = new potionRule();
+                config.Rules[i].Hotkey = i + 1;
+                config.Rules[i].IsHPTrigger = true;
                 if (i > 3)
                 {
-                    rules[i].isHP = false;
+                    config.Rules[i].IsHPTrigger = false;
                 }
-                rules[i].percent = 0.5f;
+                config.Rules[i].Percent = 0.5f;
             }
         }
 
         public void SaveIni()
         {
-            File.WriteAllText(@"poetionbot.ini", JsonConvert.SerializeObject(rules));
+            File.WriteAllText(@"poetionbot.ini", JsonConvert.SerializeObject(config, Formatting.Indented));
         }
 
         public void LoadIni()
         {
             try
             {
-                rules = Newtonsoft.Json.JsonConvert.DeserializeObject<potionRule[]>(File.ReadAllText(@"poetionbot.ini"));
-                if (rules == null)
+                config = Newtonsoft.Json.JsonConvert.DeserializeObject<config>(File.ReadAllText(@"poetionbot.ini"));
+                if (config == null)
                 {
                     ResetDefaults();
                 }
+                if (config.UpdateRateInMs < 10)
+                {
+                    config.UpdateRateInMs = 10;
+                }
+
             }
             catch (System.IO.FileNotFoundException)
             {
@@ -83,10 +89,10 @@ namespace poetionbot
         }
         public string GetStats()
         {
-            maxHP = w32.ReadProcessMemoryOffset(handle, ps, -40);
-            curHP = w32.ReadProcessMemoryOffset(handle, ps, -36);
-            maxMana = w32.ReadProcessMemoryOffset(handle, ps, -4);
-            curMana = w32.ReadProcessMemoryOffset(handle, ps, 0);            
+            maxHP = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -40);
+            curHP = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -36);
+            maxMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -4);
+            curMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, 0);            
             return curHP + "/" + maxHP + " " + curMana + "/" + maxMana;
         }
 
@@ -95,17 +101,17 @@ namespace poetionbot
 
 
             var retString = "";
-            maxHP = w32.ReadProcessMemoryOffset(handle, ps, -40);
-            curHP = w32.ReadProcessMemoryOffset(handle, ps, -36);
+            maxHP = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -40);
+            curHP = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -36);
             if (curHP < 1 || maxHP < 1) {
                 throw new Exception("Memory Failure");                
             }
 
-            for (var i =0; i < rules.Length; i++) {
-                var rule = rules[i];
-                if (!rule.isHP) continue;
+            for (var i =0; i < config.Rules.Length; i++) {
+                var rule = config.Rules[i];
+                if (!rule.IsHPTrigger) continue;
 
-                if (((float)curHP / (float)maxHP) < rule.percent)
+                if (((float)curHP / (float)maxHP) < rule.Percent)
                 {
                     UsePotion(i+1);
                     retString += "Used heal potion "+(i+1)+" due to " + curHP + "/" + maxHP + "\n";
@@ -116,19 +122,19 @@ namespace poetionbot
 
         public string CheckMana()
         {
-            maxMana = w32.ReadProcessMemoryOffset(handle, ps, -4);
-            curMana = w32.ReadProcessMemoryOffset(handle, ps, 0);
+            maxMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -4);
+            curMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, 0);
             if (curMana < 1 || maxMana < 1)
             {
                 throw new Exception("Memory Failure");
             }
 
             var retString = "";
-            for (var i = 0; i < rules.Length; i++)
+            for (var i = 0; i < config.Rules.Length; i++)
             {
-                var rule = rules[i];
-                if (rule.isHP) continue;
-                if (((float)curMana / (float)maxMana) < rule.percent)
+                var rule = config.Rules[i];
+                if (rule.IsHPTrigger) continue;
+                if (((float)curMana / (float)maxMana) < rule.Percent)
                 {
                     UsePotion(i + 1);
                     retString += "Used mana potion " + (i + 1) + " due to " + curMana + "/" + maxMana + "\n";

@@ -89,6 +89,7 @@
       <DependentUpon>poetionbot.cs</DependentUpon>
     </Compile>
     <Compile Include="poetionbot\bot.cs" />
+    <Compile Include="poetionbot\config.cs" />
     <Compile Include="poetionbot\potionRule.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
