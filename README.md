@@ -41,6 +41,12 @@ System Tray Icon Definitions
 
 <img src="http://i.imgur.com/TKRfE6c.png" width="24">(Purple) Is reserved.
 
+Testing
+---
+By default, a clean download will be set where at 50% hp, it will click 1,2,3,4. At 50% mana, it will click #5.
+
+An easy way to test if the tool is working safely is go to a field (where you can fight) and spam a skill until your is 50% used, and see if your 5th potion is clicked. If this happens, you can proceed to changing settings.
+
 Changing Settings
 ---
 Right click the system tray icon and go to Settings.
