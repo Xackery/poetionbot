@@ -40,9 +40,9 @@ namespace poetionbot
         {           
             changeIcon("blackFlask");
             instance = new bot();
-            checkHandleStatus();
-            attachPoE();
+            checkHandleStatus();            
             loadConfig();
+            attachPoE();
         }
 
         private void loadConfig()
@@ -102,13 +102,21 @@ namespace poetionbot
             {
                 changeIcon("swirlFlask");
                 return;
-            } else
+            } else if (currentFlask == "swirlFlask")
             {
                 changeIcon("greenFlask");
             }
 
-            try {
+
+            //try {
                 var retString = instance.CheckHealth();
+                if (retString == "HP is invalid")
+                {
+                    changeIcon("blackFlask");
+                    //detachPoE();
+                    return;
+                }
+                
                 if (retString.Length > 0)
                 {
                     //MessageBox.Show(retString);
@@ -116,6 +124,13 @@ namespace poetionbot
                     txtLog.Text = txtLog.Text + "\n" + DateTime.Now + ":" + retString + "\n";
                 }
                 retString = instance.CheckMana();
+                if (retString == "Mana is invalid")
+                {
+                    changeIcon("blackFlask");
+                    //detachPoE();
+                    return;
+                }
+
                 if (retString.Length > 0)
                 {
                    // MessageBox.Show(retString);
@@ -123,15 +138,20 @@ namespace poetionbot
                     txtLog.Text = txtLog.Text + "\n" + DateTime.Now + ":" + retString + "\n";
                 }
                
-            } catch (Exception err)
+           /* } catch (Exception err)
             {
                 if (err.Message == "Memory Exception")
                 {
                     notifyIcon1.Text = "poetionbot is attached, but memory is not properly aligned.";
                     changeIcon("purpleFlask");
+                    //txtLog.Text += "Challenges!" + Environment.NewLine;
                     return;
+                } else
+                {
+                    MessageBox.Show("An error:", err.Message);
                 }
             }
+            */
         }
 
 
@@ -152,7 +172,8 @@ namespace poetionbot
                 var mana = w32.ReadProcessMemoryOffset(attachHandle, instance.config.ManaPointerSet, 0);
                 if (mana == 0)
                 {
-                    MessageBox.Show("Pointers don't seem to be aligned properly...");
+                    MessageBox.Show("Hmm, something is wrong. Either the game patched, or you aren't logged into a character. Right-Click and attach once this situation comes up.");
+                    detachPoE();
                     return;
                 }
 
@@ -179,6 +200,9 @@ namespace poetionbot
             checkHandleStatus();
             changeIcon("blackFlask");
             attachToPathOfExileToolStripMenuItem.Text = "Attach to Path of Exile";
+            notifyIcon1.Text = "Path of Exile is currently not attached.";
+            tmrRefresh.Stop();
+            tmrGreenReset.Stop();
         }
 
         private void attachToPathOfExileToolStripMenuItem_Click(object sender, EventArgs e)

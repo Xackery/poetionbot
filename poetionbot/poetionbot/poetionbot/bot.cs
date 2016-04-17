@@ -26,7 +26,7 @@ namespace poetionbot
 
         public bot()
         {
-            
+            clickDelay = new int[5];
             LoadIni();
         }
         
@@ -93,28 +93,27 @@ namespace poetionbot
             curHP = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -36);
             maxMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -4);
             curMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, 0);            
-            return curHP + "/" + maxHP + " " + curMana + "/" + maxMana;
+            return curHP + "/" + maxHP + " HP | " + curMana + "/" + maxMana + " MP";
         }
 
         public string CheckHealth()
-        {
-
-
+        {            
             var retString = "";
             maxHP = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -40);
             curHP = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -36);
             if (curHP < 1 || maxHP < 1) {
-                throw new Exception("Memory Failure");                
+                retString = "HP is invalid";
+                return retString;
             }
 
             for (var i =0; i < config.Rules.Length; i++) {
                 var rule = config.Rules[i];
                 if (!rule.IsHPTrigger) continue;
-
+                
                 if (((float)curHP / (float)maxHP) < rule.Percent)
                 {
                     UsePotion(i+1);
-                    retString += "Used heal potion "+(i+1)+" due to " + curHP + "/" + maxHP + "\n";
+                    retString += "Used heal potion "+(i+1)+" due to " + curHP + "/" + maxHP + Environment.NewLine;
                 }
             }
             return retString;
@@ -122,14 +121,16 @@ namespace poetionbot
 
         public string CheckMana()
         {
+            var retString = "";
             maxMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, -4);
             curMana = w32.ReadProcessMemoryOffset(handle, config.ManaPointerSet, 0);
             if (curMana < 1 || maxMana < 1)
             {
-                throw new Exception("Memory Failure");
+                retString = "Mana is invalid";
+                return retString;
             }
 
-            var retString = "";
+           
             for (var i = 0; i < config.Rules.Length; i++)
             {
                 var rule = config.Rules[i];
@@ -137,7 +138,7 @@ namespace poetionbot
                 if (((float)curMana / (float)maxMana) < rule.Percent)
                 {
                     UsePotion(i + 1);
-                    retString += "Used mana potion " + (i + 1) + " due to " + curMana + "/" + maxMana + "\n";
+                    retString += "Used mana potion " + (i + 1) + " due to " + curMana + "/" + maxMana + Environment.NewLine;
                 }
             }
             return retString;
