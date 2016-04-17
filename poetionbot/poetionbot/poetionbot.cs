@@ -37,7 +37,8 @@ namespace poetionbot
         }
 
         private void poetionbot_Load(object sender, EventArgs e)
-        {           
+        {
+            this.Text = "poetionbot " + Application.ProductVersion.ToString();
             changeIcon("blackFlask");
             instance = new bot();
             checkHandleStatus();            
@@ -416,6 +417,16 @@ namespace poetionbot
             isUnsaved = false;
             cmdSave.Enabled = false;
             isLoaded = true;
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmdAbout_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Poetionbot Version "+Application.ProductVersion.ToString());
         }
     }
 }

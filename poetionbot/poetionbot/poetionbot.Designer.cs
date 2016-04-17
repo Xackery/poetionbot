@@ -60,6 +60,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cmdReload = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmdAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tck1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tck2)).BeginInit();
@@ -326,7 +328,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(273, 24);
@@ -347,6 +350,22 @@
             this.cmdReload.Size = new System.Drawing.Size(152, 22);
             this.cmdReload.Text = "&Reload INI";
             this.cmdReload.Click += new System.EventHandler(this.cmdReload_Click);
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmdAbout});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "&Help";
+            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
+            // cmdAbout
+            // 
+            this.cmdAbout.Name = "cmdAbout";
+            this.cmdAbout.Size = new System.Drawing.Size(152, 22);
+            this.cmdAbout.Text = "&About";
+            this.cmdAbout.Click += new System.EventHandler(this.cmdAbout_Click);
             // 
             // poetionbot
             // 
@@ -424,6 +443,8 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cmdReload;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cmdAbout;
     }
 }
 
