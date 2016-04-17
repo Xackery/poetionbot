@@ -56,12 +56,17 @@
             this.chkHP3 = new System.Windows.Forms.CheckBox();
             this.chkHP4 = new System.Windows.Forms.CheckBox();
             this.chkHP5 = new System.Windows.Forms.CheckBox();
+            this.cmdSave = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmdReload = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tck1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tck2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tck3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tck4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tck5)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // notifyIcon1
@@ -124,11 +129,11 @@
             // 
             // txtLog
             // 
-            this.txtLog.Location = new System.Drawing.Point(12, 135);
+            this.txtLog.Location = new System.Drawing.Point(10, 192);
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(249, 114);
+            this.txtLog.Size = new System.Drawing.Size(253, 114);
             this.txtLog.TabIndex = 1;
             // 
             // tmrGreenReset
@@ -138,7 +143,7 @@
             // 
             // tck1
             // 
-            this.tck1.Location = new System.Drawing.Point(12, 12);
+            this.tck1.Location = new System.Drawing.Point(12, 27);
             this.tck1.Maximum = 99;
             this.tck1.Minimum = 1;
             this.tck1.Name = "tck1";
@@ -153,7 +158,7 @@
             // lblTck1
             // 
             this.lblTck1.AutoSize = true;
-            this.lblTck1.Location = new System.Drawing.Point(9, 94);
+            this.lblTck1.Location = new System.Drawing.Point(9, 109);
             this.lblTck1.Name = "lblTck1";
             this.lblTck1.Size = new System.Drawing.Size(48, 13);
             this.lblTck1.TabIndex = 3;
@@ -163,7 +168,7 @@
             // lblTck2
             // 
             this.lblTck2.AutoSize = true;
-            this.lblTck2.Location = new System.Drawing.Point(60, 94);
+            this.lblTck2.Location = new System.Drawing.Point(60, 109);
             this.lblTck2.Name = "lblTck2";
             this.lblTck2.Size = new System.Drawing.Size(48, 13);
             this.lblTck2.TabIndex = 5;
@@ -172,7 +177,7 @@
             // 
             // tck2
             // 
-            this.tck2.Location = new System.Drawing.Point(63, 12);
+            this.tck2.Location = new System.Drawing.Point(63, 27);
             this.tck2.Maximum = 99;
             this.tck2.Minimum = 1;
             this.tck2.Name = "tck2";
@@ -186,7 +191,7 @@
             // lblTck3
             // 
             this.lblTck3.AutoSize = true;
-            this.lblTck3.Location = new System.Drawing.Point(111, 94);
+            this.lblTck3.Location = new System.Drawing.Point(111, 109);
             this.lblTck3.Name = "lblTck3";
             this.lblTck3.Size = new System.Drawing.Size(48, 13);
             this.lblTck3.TabIndex = 7;
@@ -195,7 +200,7 @@
             // 
             // tck3
             // 
-            this.tck3.Location = new System.Drawing.Point(114, 12);
+            this.tck3.Location = new System.Drawing.Point(114, 27);
             this.tck3.Maximum = 99;
             this.tck3.Minimum = 1;
             this.tck3.Name = "tck3";
@@ -209,7 +214,7 @@
             // lblTck4
             // 
             this.lblTck4.AutoSize = true;
-            this.lblTck4.Location = new System.Drawing.Point(162, 94);
+            this.lblTck4.Location = new System.Drawing.Point(162, 109);
             this.lblTck4.Name = "lblTck4";
             this.lblTck4.Size = new System.Drawing.Size(48, 13);
             this.lblTck4.TabIndex = 9;
@@ -218,7 +223,7 @@
             // 
             // tck4
             // 
-            this.tck4.Location = new System.Drawing.Point(165, 12);
+            this.tck4.Location = new System.Drawing.Point(165, 27);
             this.tck4.Maximum = 99;
             this.tck4.Minimum = 1;
             this.tck4.Name = "tck4";
@@ -233,7 +238,7 @@
             // lblTck5
             // 
             this.lblTck5.AutoSize = true;
-            this.lblTck5.Location = new System.Drawing.Point(213, 94);
+            this.lblTck5.Location = new System.Drawing.Point(213, 109);
             this.lblTck5.Name = "lblTck5";
             this.lblTck5.Size = new System.Drawing.Size(48, 13);
             this.lblTck5.TabIndex = 11;
@@ -242,7 +247,7 @@
             // 
             // tck5
             // 
-            this.tck5.Location = new System.Drawing.Point(216, 12);
+            this.tck5.Location = new System.Drawing.Point(216, 27);
             this.tck5.Maximum = 99;
             this.tck5.Minimum = 1;
             this.tck5.Name = "tck5";
@@ -256,7 +261,7 @@
             // chkHP1
             // 
             this.chkHP1.AutoSize = true;
-            this.chkHP1.Location = new System.Drawing.Point(12, 110);
+            this.chkHP1.Location = new System.Drawing.Point(12, 125);
             this.chkHP1.Name = "chkHP1";
             this.chkHP1.Size = new System.Drawing.Size(41, 17);
             this.chkHP1.TabIndex = 12;
@@ -267,7 +272,7 @@
             // chkHP2
             // 
             this.chkHP2.AutoSize = true;
-            this.chkHP2.Location = new System.Drawing.Point(63, 110);
+            this.chkHP2.Location = new System.Drawing.Point(63, 125);
             this.chkHP2.Name = "chkHP2";
             this.chkHP2.Size = new System.Drawing.Size(41, 17);
             this.chkHP2.TabIndex = 13;
@@ -278,7 +283,7 @@
             // chkHP3
             // 
             this.chkHP3.AutoSize = true;
-            this.chkHP3.Location = new System.Drawing.Point(114, 110);
+            this.chkHP3.Location = new System.Drawing.Point(114, 125);
             this.chkHP3.Name = "chkHP3";
             this.chkHP3.Size = new System.Drawing.Size(41, 17);
             this.chkHP3.TabIndex = 14;
@@ -289,7 +294,7 @@
             // chkHP4
             // 
             this.chkHP4.AutoSize = true;
-            this.chkHP4.Location = new System.Drawing.Point(165, 110);
+            this.chkHP4.Location = new System.Drawing.Point(165, 125);
             this.chkHP4.Name = "chkHP4";
             this.chkHP4.Size = new System.Drawing.Size(41, 17);
             this.chkHP4.TabIndex = 15;
@@ -300,7 +305,7 @@
             // chkHP5
             // 
             this.chkHP5.AutoSize = true;
-            this.chkHP5.Location = new System.Drawing.Point(216, 110);
+            this.chkHP5.Location = new System.Drawing.Point(216, 125);
             this.chkHP5.Name = "chkHP5";
             this.chkHP5.Size = new System.Drawing.Size(41, 17);
             this.chkHP5.TabIndex = 16;
@@ -308,11 +313,48 @@
             this.chkHP5.UseVisualStyleBackColor = true;
             this.chkHP5.CheckedChanged += new System.EventHandler(this.chkHP5_CheckedChanged);
             // 
+            // cmdSave
+            // 
+            this.cmdSave.Location = new System.Drawing.Point(10, 152);
+            this.cmdSave.Name = "cmdSave";
+            this.cmdSave.Size = new System.Drawing.Size(253, 34);
+            this.cmdSave.TabIndex = 17;
+            this.cmdSave.Text = "Save Changes";
+            this.cmdSave.UseVisualStyleBackColor = true;
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(273, 24);
+            this.menuStrip1.TabIndex = 18;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cmdReload});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "&File";
+            // 
+            // cmdReload
+            // 
+            this.cmdReload.Name = "cmdReload";
+            this.cmdReload.Size = new System.Drawing.Size(152, 22);
+            this.cmdReload.Text = "&Reload INI";
+            this.cmdReload.Click += new System.EventHandler(this.cmdReload_Click);
+            // 
             // poetionbot
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(274, 260);
+            this.ClientSize = new System.Drawing.Size(273, 319);
+            this.Controls.Add(this.cmdSave);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.chkHP5);
             this.Controls.Add(this.chkHP4);
             this.Controls.Add(this.chkHP3);
@@ -330,6 +372,7 @@
             this.Controls.Add(this.tck1);
             this.Controls.Add(this.txtLog);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "poetionbot";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "poetionbot";
@@ -343,6 +386,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tck3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tck4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tck5)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -375,6 +420,10 @@
         private System.Windows.Forms.CheckBox chkHP3;
         private System.Windows.Forms.CheckBox chkHP4;
         private System.Windows.Forms.CheckBox chkHP5;
+        private System.Windows.Forms.Button cmdSave;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cmdReload;
     }
 }
 

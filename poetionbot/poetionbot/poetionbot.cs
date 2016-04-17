@@ -26,6 +26,10 @@ namespace poetionbot
 
         private bool isSystrayExit;
         private bool isLoaded;
+        /// <summary>
+        /// Are there unsaved changes?
+        /// </summary>
+        private bool isUnsaved;
 
         public poetionbot()
         {
@@ -59,15 +63,17 @@ namespace poetionbot
             chkHP4.Checked = instance.rules[3].isHP;
             chkHP5.Checked = instance.rules[4].isHP;
             isLoaded = true;
+            cmdSave.Enabled = false;
+            ruleSync();
         }
 
         private void ruleSync()
         {
-            lblTck1.Text = "1 - " + (int)((float)instance.rules[0].percent * (float)100);
-            lblTck2.Text = "2 - " + (int)((float)instance.rules[1].percent * (float)100);
-            lblTck3.Text = "3 - " + (int)((float)instance.rules[2].percent * (float)100);
-            lblTck4.Text = "4 - " + (int)((float)instance.rules[3].percent * (float)100);
-            lblTck5.Text = "5 - " + (int)((float)instance.rules[4].percent * (float)100);
+            lblTck1.Text = "1 - " + (int)((float)instance.rules[0].percent * (float)100) + "%";
+            lblTck2.Text = "2 - " + (int)((float)instance.rules[1].percent * (float)100) + "%";
+            lblTck3.Text = "3 - " + (int)((float)instance.rules[2].percent * (float)100) + "%";
+            lblTck4.Text = "4 - " + (int)((float)instance.rules[3].percent * (float)100) + "%";
+            lblTck5.Text = "5 - " + (int)((float)instance.rules[4].percent * (float)100) + "%";
         }
 
 
@@ -86,7 +92,6 @@ namespace poetionbot
         {
 
         }
-        
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
@@ -125,8 +130,6 @@ namespace poetionbot
                     return;
                 }
             }
-           
-
         }
 
 
@@ -262,8 +265,10 @@ namespace poetionbot
 
         private void tck5_ValueChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[4].percent = (float)((float)tck5.Value / (float)100);
             ruleSync();
+            unsavedUpdate();
         }
 
         private void chkHP1_CheckedChanged(object sender, EventArgs e)
@@ -271,6 +276,7 @@ namespace poetionbot
             if (!isLoaded) return;
             instance.rules[0].isHP = chkHP1.Checked;            
             ruleSync();
+            unsavedUpdate();
         }
        
         private void chkHP2_CheckedChanged(object sender, EventArgs e)
@@ -278,6 +284,7 @@ namespace poetionbot
             if (!isLoaded) return;
             instance.rules[1].isHP = chkHP4.Checked;
             ruleSync();
+            unsavedUpdate();
         }
 
         private void chkHP3_CheckedChanged(object sender, EventArgs e)
@@ -285,6 +292,7 @@ namespace poetionbot
             if (!isLoaded) return;
             instance.rules[2].isHP = chkHP4.Checked;
             ruleSync();
+            unsavedUpdate();
         }
 
         private void chkHP4_CheckedChanged(object sender, EventArgs e)
@@ -292,12 +300,14 @@ namespace poetionbot
             if (!isLoaded) return;
             instance.rules[3].isHP = chkHP4.Checked;
             ruleSync();
+            unsavedUpdate();
         }
         private void chkHP5_CheckedChanged(object sender, EventArgs e)
         {
             if (!isLoaded) return;
             instance.rules[4].isHP = chkHP4.Checked;
             ruleSync();
+            unsavedUpdate();
         }
 
         private void tck1_Scroll(object sender, EventArgs e)
@@ -307,20 +317,26 @@ namespace poetionbot
 
         private void tck1_ValueChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[0].percent = (float)((float)tck1.Value / (float)100);
             ruleSync();
+            unsavedUpdate();
         }
 
         private void tck2_ValueChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[1].percent = (float)((float)tck2.Value / (float)100);
             ruleSync();
+            unsavedUpdate();
         }
 
         private void tck3_ValueChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[2].percent = (float)((float)tck3.Value / (float)100);
             ruleSync();
+            unsavedUpdate();
         }
 
         private void tck4_Scroll(object sender, EventArgs e)
@@ -330,13 +346,43 @@ namespace poetionbot
 
         private void tck4_ValueChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[3].percent = (float)((float)tck4.Value / (float)100);
             ruleSync();
+            unsavedUpdate();
         }
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
+        }
+
+        private void unsavedUpdate()
+        {
+            isUnsaved = true;
+            cmdSave.Enabled = true;
+        }
+
+        private void cmdSave_Click(object sender, EventArgs e)
+        {            
+            instance.SaveIni();
+            isUnsaved = false;
+            cmdSave.Enabled = false;
+        }
+
+        private void cmdReload_Click(object sender, EventArgs e)
+        {
+            isLoaded = false;
+            instance.LoadIni();
+            tck1.Value = (int)((float)instance.rules[0].percent * (float)100);
+            tck2.Value = (int)((float)instance.rules[1].percent * (float)100);
+            tck3.Value = (int)((float)instance.rules[2].percent * (float)100);
+            tck4.Value = (int)((float)instance.rules[3].percent * (float)100);
+            tck5.Value = (int)((float)instance.rules[4].percent * (float)100);
+            ruleSync();
+            isUnsaved = false;
+            cmdSave.Enabled = false;
+            isLoaded = true;
         }
     }
 }
