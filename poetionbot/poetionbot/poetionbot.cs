@@ -47,21 +47,8 @@ namespace poetionbot
 
         private void loadConfig()
         {
-            instance.rules[1].isHP = true;
-            instance.rules[1].percent = 0.4f;
-            
-            instance.rules[3].isHP = true;
-            instance.rules[3].percent = 0.4f;
 
-            instance.rules[2].isHP = true;
-            instance.rules[2].percent = 0.5f;
-
-            instance.rules[0].isHP = true;
-            instance.rules[0].percent = 0.8f;
-
-            instance.rules[4].isHP = false;
-            instance.rules[4].percent = 0.1f;
-
+            instance.LoadIni();
 
             tck1.Value = (int)((float)instance.rules[0].percent * (float)100);
             tck2.Value = (int)((float)instance.rules[1].percent * (float)100);
@@ -75,7 +62,7 @@ namespace poetionbot
             chkHP3.Checked = !instance.rules[2].isHP;
             chkHP4.Checked = !instance.rules[3].isHP;
             chkHP5.Checked = !instance.rules[4].isHP;
-
+            
         }
 
         private void ruleSync()

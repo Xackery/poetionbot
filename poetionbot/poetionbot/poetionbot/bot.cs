@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace poetionbot
 {
@@ -28,6 +30,11 @@ namespace poetionbot
 
         public bot()
         {
+            LoadIni();
+        }
+        
+        public void ResetDefaults()
+        {
             ps = new pointerset();
             ps.offsets = new int[6];
             ps.offsets[0] = 0x9DD404;
@@ -44,8 +51,28 @@ namespace poetionbot
                 rules[i] = new potionRule();
             }
         }
-        
 
+        public void SaveIni()
+        {
+            File.WriteAllText(@"poetionbot.ini", JsonConvert.SerializeObject(rules));
+        }
+
+        public void LoadIni()
+        {
+            try
+            {
+                rules = Newtonsoft.Json.JsonConvert.DeserializeObject<potionRule[]>(File.ReadAllText(@"poetionbot.ini"));
+                if (rules == null)
+                {
+                    ResetDefaults();
+                }
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                ResetDefaults();
+                SaveIni();
+            }
+        }
         public string GetStats()
         {
             maxHP = w32.ReadProcessMemoryOffset(handle, ps, -40);

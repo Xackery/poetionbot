@@ -8,6 +8,7 @@ namespace poetionbot
 {
     class potionRule
     {
+        public int hotkey;
         public float percent;
         public bool isHP;
     }
