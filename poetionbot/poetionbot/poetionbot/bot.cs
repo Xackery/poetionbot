@@ -45,10 +45,18 @@ namespace poetionbot
             ps.offsets[5] = 0x54;
 
             clickDelay = new int[5];
+
             rules = new potionRule[5];
             for (var i = 0; i < 5; i++)
             {
                 rules[i] = new potionRule();
+                rules[i].hotkey = i + 1;
+                rules[i].isHP = true;
+                if (i > 3)
+                {
+                    rules[i].isHP = false;
+                }
+                rules[i].percent = 0.5f;
             }
         }
 

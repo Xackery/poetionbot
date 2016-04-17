@@ -25,6 +25,7 @@ namespace poetionbot
         private string currentFlask;
 
         private bool isSystrayExit;
+        private bool isLoaded;
 
         public poetionbot()
         {
@@ -32,14 +33,9 @@ namespace poetionbot
         }
 
         private void poetionbot_Load(object sender, EventArgs e)
-        {
-           
-
+        {           
             changeIcon("blackFlask");
             instance = new bot();
-
-            
-            
             checkHandleStatus();
             attachPoE();
             loadConfig();
@@ -47,7 +43,7 @@ namespace poetionbot
 
         private void loadConfig()
         {
-
+            isLoaded = false;
             instance.LoadIni();
 
             tck1.Value = (int)((float)instance.rules[0].percent * (float)100);
@@ -57,12 +53,12 @@ namespace poetionbot
             tck5.Value = (int)((float)instance.rules[4].percent * (float)100);
 
             
-            chkHP1.Checked = !instance.rules[0].isHP;
-            chkHP2.Checked = !instance.rules[1].isHP;
-            chkHP3.Checked = !instance.rules[2].isHP;
-            chkHP4.Checked = !instance.rules[3].isHP;
-            chkHP5.Checked = !instance.rules[4].isHP;
-            
+            chkHP1.Checked = instance.rules[0].isHP;
+            chkHP2.Checked = instance.rules[1].isHP;
+            chkHP3.Checked = instance.rules[2].isHP;
+            chkHP4.Checked = instance.rules[3].isHP;
+            chkHP5.Checked = instance.rules[4].isHP;
+            isLoaded = true;
         }
 
         private void ruleSync()
@@ -221,13 +217,11 @@ namespace poetionbot
 
         private void poetionbot_FormClosing(object sender, FormClosingEventArgs e)
         {
-
             mainForm.Hide();
             if (!isSystrayExit)
             { //Only exit if the systray invokes it.
                 e.Cancel = true;
             }
-            
         }
 
         private void changeIcon(string iconType)
@@ -274,29 +268,34 @@ namespace poetionbot
 
         private void chkHP1_CheckedChanged(object sender, EventArgs e)
         {
-            instance.rules[0].isHP = chkHP1.Checked;
+            if (!isLoaded) return;
+            instance.rules[0].isHP = chkHP1.Checked;            
             ruleSync();
         }
        
         private void chkHP2_CheckedChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[1].isHP = chkHP4.Checked;
             ruleSync();
         }
 
         private void chkHP3_CheckedChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[2].isHP = chkHP4.Checked;
             ruleSync();
         }
 
         private void chkHP4_CheckedChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[3].isHP = chkHP4.Checked;
             ruleSync();
         }
         private void chkHP5_CheckedChanged(object sender, EventArgs e)
         {
+            if (!isLoaded) return;
             instance.rules[4].isHP = chkHP4.Checked;
             ruleSync();
         }
