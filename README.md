@@ -43,9 +43,13 @@ System Tray Icon Definitions
 
 Testing
 ---
-By default, a clean download will be set where at 50% hp, it will click 1,2,3,4. At 50% mana, it will click #5.
+By default, a clean download will be set where at 50% hp, it will click 1, 2, 3, and 4. At 50% mana, it will click 5.
 
-An easy way to test if the tool is working safely is go to a field (where you can fight) and spam a skill until your is 50% used, and see if your 5th potion is clicked. If this happens, you can proceed to changing settings.
+Make sure a mana potion is on your 5th slot for testing.
+
+Go to a combat field (where you can fight) and spam a skill until your mana is 50% used, then see if your 5th potion is clicked 
+
+If this happens, the bot is working properly, and you can now proceed to changing settings.
 
 Changing Settings
 ---
