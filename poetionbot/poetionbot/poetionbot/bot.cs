@@ -155,7 +155,7 @@ namespace poetionbot
                 return;
             }
             w32.PressKey(GetHotkey(hotkey), 1);
-            clickDelay[hotkey-1] = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds)+5;
+            clickDelay[hotkey-1] = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds)+1;
         }
         
 
